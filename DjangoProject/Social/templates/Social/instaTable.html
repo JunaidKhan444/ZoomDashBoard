@@ -1,0 +1,16 @@
+{% extends "Social/base2.html" %}
+{% load static %}
+{% block content %}
+
+{% for record in event_list %} 
+  <tr>
+    <td>{{record.media_id}}</td>
+    <td>{{record.media_type}}</td>
+    <td>{{record.comments_count}}</td>
+    <td>{{record.like_count}}</td>
+    <td>{{record.comments}}</td>
+  </tr>
+   
+{% endfor %}
+
+{% endblock %}

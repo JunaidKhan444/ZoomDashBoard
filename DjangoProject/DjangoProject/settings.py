@@ -77,9 +77,9 @@ WSGI_APPLICATION = 'DjangoProject.wsgi.application'
 DATABASES = {
     'default': {  
         'ENGINE': 'django.db.backends.mysql',  
-        'NAME': 'Facebook',  
-        'USER': 'root',  
-        'PASSWORD': 'jk01v7716',  
+        'NAME': 'ig',  
+        'USER': 'aamir',  
+        'PASSWORD': 'aaa',  
         'HOST': '127.0.0.1',  
         'PORT': '3306',  
         'OPTIONS': {  

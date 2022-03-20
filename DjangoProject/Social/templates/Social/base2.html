@@ -1,0 +1,48 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <link rel="stylesheet" type="text/css" href="{% static 'Social/base.css' %}"/>
+    <script src="{% static 'Social/base.js'%}"></script> 
+    <title>IGD</title>
+</head>                              
+<body>
+    <section>
+        <!--for demo wrap-->
+        <h1>Insta Data</h1>
+        <div class="tbl-header">
+          <table cellpadding="0" cellspacing="0" border="0">
+            <thead>
+              <tr>
+                
+                <th>Media Id</th>
+                <th>Media Type</th>
+                <th>Comment Count</th>
+                <th>Like Count</th>
+                <th>Comments</th>
+                
+              </tr>
+            </thead>
+          </table>
+        </div>
+        <div class="tbl-content">
+          <table cellpadding="0" cellspacing="0" border="0">
+            <tbody>
+              
+                {% block content %} {% endblock %}
+            </tbody>
+          </table>
+        </div>
+      </section>
+      
+      
+      <!-- follow me template -->
+      <div class="made-with-love">
+        <a target="_blank" href="#">Aamir</a>
+      </div>
+</body>
+</html>
