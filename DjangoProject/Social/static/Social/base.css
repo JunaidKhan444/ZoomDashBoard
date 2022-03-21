@@ -12,13 +12,13 @@ h1{
     table-layout: fixed;
   }
   .tbl-header{
-    background-color: rgba(255,255,255,0.3);
+    background-color: rgba(255, 255, 255, 0.048);
    }
   .tbl-content{
     height:300px;
     overflow-x:auto;
-    margin-top: 0px;
-    border: 1px solid rgba(255,255,255,0.3);
+    margin-top: 1px;
+    border: 1px solid rgba(88, 20, 20, 0.3);
   }
   th{
     padding: 20px 15px;

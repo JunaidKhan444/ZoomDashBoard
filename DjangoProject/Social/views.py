@@ -42,7 +42,7 @@ class InstaData(View):
     def get(self, request):
         base_url = "https://graph.facebook.com/v13.0"
         user_id = "100572015934463"
-        accessToken = 'EAAEqyxbMPZBYBAMxAp82hnKkLD4NoKbveKZBds0kXwFvqsEDQRK34fHJ9YDK4Y7tIEmmjaBFZBxK44X0dpbSZCxHSCbafUdE0BlkwsUCB5zA33V5LNUQrh3SQDbUCy5BWObcdO7zkKtb7oMY6PUqTNVuBUq4qixPzOHSzZCVWhrZA2Aqq7FDUhM9h74Ynj8i5YYpDcSIVpaOV6XNiRJyXZAcX8gMWnbjm0ZD'
+        accessToken = 'EAAEqyxbMPZBYBAClRTZBT7LSvDtx6ZBBH51S3W2QFqBZAIThm6W4Lq9NZAeuVeqNKUuBGhX8LeSQLMglWU7nEaL15A5FiMuMcWKPViFOz6fqmPNBABgAK4zls1viIl9dPxkt5AST4BRnnzizINwWfY0492kCM6geOWZALmrjy1ne82fZBwRCrZBYUR3X65CL3pLTe5Ca836MKQZB18HgBIgJ6qMqTGUTLeNcZD'
         account_url=base_url+'/'+user_id+'/accounts?access_token='+accessToken
 
         #Fetch account data and grab page id from the data 
