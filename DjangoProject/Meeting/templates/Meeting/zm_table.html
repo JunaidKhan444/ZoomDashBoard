@@ -1,0 +1,15 @@
+{% extends "Meeting/base.html" %}
+{% block content %}
+
+{% for record in event_list %} 
+  <tr>
+    <td>{{record.meeting_topic}}</td>
+    <td>{{record.meeting_starttime}}</td>
+    <td>{{record.meeting_duration}}</td>
+    <td>{{record.meeting_created}}</td>
+    <td>{{record.meeting_url}}</td>
+  </tr>
+   
+{% endfor %}
+
+{% endblock %}

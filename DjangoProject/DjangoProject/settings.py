@@ -25,12 +25,13 @@ SECRET_KEY = 'django-insecure-ij*da!xwu%732x!wg2uk^0n8k8d@-t3uo+v&#@s6@c&)!&b(m1
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    'Meeting.apps.MeetingConfig',
     'Social.apps.SocialConfig',
     'django.contrib.admin',
     'django.contrib.auth',
