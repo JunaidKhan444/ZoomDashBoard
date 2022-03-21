@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'gcalendar.apps.GcalendarConfig',
     'Social.apps.SocialConfig',
     'django.contrib.admin',
     'django.contrib.auth',

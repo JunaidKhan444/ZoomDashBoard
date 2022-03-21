@@ -17,7 +17,8 @@ from django.contrib import admin
 from django.urls import path, include
 
 urlpatterns = [
-    
     path('admin/', admin.site.urls),
-    path('facebook/', include('Social.urls'))
+    path('facebook/', include('Social.urls')),
+    path('auth/', include('gcalendar.urls')),
+    path('https://57c3-103-249-211-178.ngrok.io', include('gcalendar.urls')),
 ]
