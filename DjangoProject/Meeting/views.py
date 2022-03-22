@@ -35,16 +35,17 @@ class DisplayMeetings(View):
         data = json.loads(list_meetings.text)
         for datum in data['meetings']:
             #print(datum['uuid'], type(datum['uuid']))
-            #obj,created1 = ZoomMeetings.objects.get_or_create(object_id=datum['uuid'])
-            #if created1 == True:
-            obj = ZoomMeetings()
-            #obj.object_id= datum['uuid']
-            obj.meeting_topic = datum['topic']
-            obj.meeting_starttime = datum['start_time']
-            obj.meeting_duration = datum['duration']
-            obj.meeting_created = datum['created_at']
-            obj.meeting_url  = datum['join_url']
-            obj.save()
+            obj,created1 = ZoomMeetings.objects.get_or_create(object_id=datum['id'])
+            if created1 == True:
+            #obj = ZoomMeetings()
+                obj.object_id= datum['id']
+                #print(type(datum['id']))
+                obj.meeting_topic = datum['topic']
+                obj.meeting_starttime = datum['start_time']
+                obj.meeting_duration = datum['duration']
+                obj.meeting_created = datum['created_at']
+                obj.meeting_url  = datum['join_url']
+                obj.save()
     
 
 
