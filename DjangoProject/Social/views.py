@@ -10,7 +10,7 @@ import json
 class DisplayPosts(View):
     def get(self,request):
         
-        exchange_token = 'EAAHst9r8iOQBAEfh5w8t62MclzdSMTtrTsZAHwThaYZAocgZCeMTDcXZA9lfTTu9I5hG7taSIi7g6BynwkLhHZBnlH4boNdsuVq9c5NC90qlf3bKakUeQVilxfZCWMiYV1RtgZAq8WAleAuhIQ7GjOGteXtnyMa7RDKr1AItUJmjZAHds1uwiEmt2LhRB67ROfeRB0ITBHMgldmDXbooaRHabvWwJZBMZBRKYZD'
+        exchange_token = 'EAAHst9r8iOQBAE37bBFHMZCO1hfT28pYXDFk8FeaGpJ5aYB4HpIYW3AUjTxRJfYLtsBO1pme3s0J5j29sGAfcjx53i5aZCphG2djPbR4FnoEzLkkT5ZBjZBkF19Vi3fuUpQYwRgwiZCTMOAmYVMiA0rS5EKXQZCZARivYwQs0pztIoEd41FtsEfDsxZB8n60iTeXburrpDZAkB6ZCeVE10P0qmUfZAYMSfZA3VgZD'
         #template_name ='fb_table.html'
         response1 = requests.get("https://graph.facebook.com/oauth/access_token?grant_type=fb_exchange_token&client_id=541749373864164&client_secret=0492ef6f4cc4f745b8dcc688cffd6cbd&fb_exchange_token={}".format(exchange_token))
         long_token1 = json.loads(response1.text)
@@ -25,11 +25,12 @@ class DisplayPosts(View):
         data = json.loads(post_data.text)
         print(rating.text)
         for datum in data['data']:
-            obj = FacebookPosts()
-            obj.post_data = datum['message']
-            obj.post_date = datum['created_time']
-           
-            obj.save()
+            obj,created1 = FacebookPosts.objects.get_or_create(post_id=datum['id'])
+            if created1 == True:
+                obj.post_id = datum['id']
+                obj.post_data = datum['message']
+                obj.post_date = datum['created_time']
+                obj.save()
 
         
         """for x in records:

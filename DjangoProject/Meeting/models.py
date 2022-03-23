@@ -10,3 +10,5 @@ class ZoomMeetings(models.Model):
     meeting_created   = models.DateTimeField(null=True)
     meeting_url =  models.CharField(max_length=1000)
     
+    def __str__(self):
+        return self.meeting_topic

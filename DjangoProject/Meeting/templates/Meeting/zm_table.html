@@ -8,8 +8,11 @@
     <td>{{record.meeting_duration}}</td>
     <td>{{record.meeting_created}}</td>
     <td><a href={{record.meeting_url}} target = "_blank"><u>Click To Join</u></a></td>
+    <td><a href="{% url 'delete' record.object_id %}"> Delete </a> </td>
   </tr>
    
 {% endfor %}
 
 {% endblock %}
+
+  
