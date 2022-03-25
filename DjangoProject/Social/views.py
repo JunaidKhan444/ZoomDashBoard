@@ -10,7 +10,7 @@ import json
 class DisplayPosts(View):
     def get(self,request):
         
-        exchange_token = 'EAAHst9r8iOQBAE37bBFHMZCO1hfT28pYXDFk8FeaGpJ5aYB4HpIYW3AUjTxRJfYLtsBO1pme3s0J5j29sGAfcjx53i5aZCphG2djPbR4FnoEzLkkT5ZBjZBkF19Vi3fuUpQYwRgwiZCTMOAmYVMiA0rS5EKXQZCZARivYwQs0pztIoEd41FtsEfDsxZB8n60iTeXburrpDZAkB6ZCeVE10P0qmUfZAYMSfZA3VgZD'
+        exchange_token = 'EAAHst9r8iOQBAP3ZA1ZA3ZBgSmxoVdwmj38hw3d5leAdgZACRpPvRqWU9PQa2AZASHDwZAomAvxTy1YQZBu61GKmdsXp15bXYu2ncM4m3ZCTOfpxrKp8mE6zdCEpLZB6yikqu1IfAIBKucqm9uzFKV00735DTWMkL76nhiZBZAirtSeUpPlA77tLPaAGY7ZBjLvMlX14Mi2f1eEOX1SP1qzF5gRZCzMykimV2GIcZD'
         #template_name ='fb_table.html'
         response1 = requests.get("https://graph.facebook.com/oauth/access_token?grant_type=fb_exchange_token&client_id=541749373864164&client_secret=0492ef6f4cc4f745b8dcc688cffd6cbd&fb_exchange_token={}".format(exchange_token))
         long_token1 = json.loads(response1.text)
