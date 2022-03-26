@@ -6,6 +6,6 @@ from django.forms import CharField, IntegerField
 class FacebookPosts(models.Model):
     post_id = models.TextField()
     post_data = models.CharField(max_length=1000)
-    post_date = models.DateTimeField()
+    post_date = models.DateTimeField(null=True)
     
     

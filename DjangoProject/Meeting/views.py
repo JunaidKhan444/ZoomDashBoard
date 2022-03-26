@@ -12,10 +12,14 @@ import json
 from .models import ZoomMeetings
 from .forms import EditForm
 
+class addmeeting(View):
 
-def addmeeting(request):
-    form = EditForm()
-    if request.method == "POST":
+    def get(self,request):
+        form = EditForm()
+        context ={'form':form}
+        return render(request,'Meeting/edit.html',context)
+
+    def post(self,request):
         form = EditForm(request.POST)
         if form.is_valid():
             topic = form.cleaned_data['Meeting_Topic']
@@ -40,21 +44,27 @@ def addmeeting(request):
             email='mrjunaid444@gmail.com'
             url_Cmeetings = 'https://api.zoom.us/v2/users/{}/meetings'.format(email)
             create_meeting = requests.post(url_Cmeetings,json=obj,headers=header)
-            #print(create_meeting.status_code)
 
             return redirect('meetings')
-
         else:
              print("Invalid Form")
              context ={'form':form}
              return render(request,'Meeting/edit.html',context)
-   
-    context ={'form':form}
-    return render(request,'Meeting/edit.html',context)
+            #print(create_meeting.status_code)
 
-def editmeeting(request,pk):
-    data1 = ZoomMeetings.objects.get(object_id=pk)
-    if request.method == "POST":
+class editmeeting(View):
+    def get(self,request,pk):
+        data1 = ZoomMeetings.objects.get(object_id=pk)
+        #form = EditForm(initial=model_to_dict(data1))
+        #form.Meeting_Topic.data = data1.meeting_topic
+        #form.Meeting_Start_Date.data = data1.meeting_starttime 
+        #form.Duration.data = data1.meeting_duration
+        details={'Meeting_Topic':data1.meeting_topic,'Meeting_Start_Date':data1.meeting_starttime,'Duration':data1.meeting_duration}
+        form = EditForm(details)
+        context ={'form':form,'pk':pk}
+        return render (request,'Meeting/edition.html',context)
+
+    def post(self,request,pk):
         form = EditForm(request.POST)
         if form.is_valid():
             topic = form.cleaned_data['Meeting_Topic']
@@ -78,12 +88,13 @@ def editmeeting(request,pk):
             header = {'authorization':"Bearer {}".format(encoded_jwt)}
             email='mrjunaid444@gmail.com'
             data1 = ZoomMeetings.objects.get(object_id=pk)
-            print(type(data1.object_id))
+            #print(type(data1.object_id))
 
             url_Emeetings = 'https://api.zoom.us/v2/users/meetings/{}'.format(data1.object_id)
             print(url_Emeetings)
             print(obj)
             edit_meeting = requests.patch(url_Emeetings,json=obj,headers=header)
+            
             print(edit_meeting.status_code)
 
             return redirect('meetings')
@@ -92,21 +103,14 @@ def editmeeting(request,pk):
              print("Invalid Form")
              context ={'form':form}
              return render(request,'Meeting/edition.html',context)
-    #form = EditForm(initial=model_to_dict(data1))
-    #form.Meeting_Topic.data = data1.meeting_topic
-    #form.Meeting_Start_Date.data = data1.meeting_starttime 
-    #form.Duration.data = data1.meeting_duration
-    details={'Meeting_Topic':data1.meeting_topic,'Meeting_Start_Date':data1.meeting_starttime,'Duration':data1.meeting_duration}
-    form = EditForm(details)
-    context ={'form':form,'pk':pk}
-    return render (request,'Meeting/edition.html',context)
 
-
-
-def deletemeeting(request,pk):
-    item1 = ZoomMeetings.objects.get(object_id=pk)
-    print(type(pk))
-    if request.method == "POST":
+class deletemeeting(View):
+    def get(self,request,pk):
+        item1 = ZoomMeetings.objects.get(object_id=pk)
+        context ={'item':item1}
+        return render(request,'Meeting/delete.html',context)
+    def post(self,request,pk):
+        item1 = ZoomMeetings.objects.get(object_id=pk)
         time_now = datetime.datetime.now()
         expiration_time = time_now+datetime.timedelta(seconds= 20)
         headers = {
@@ -123,9 +127,6 @@ def deletemeeting(request,pk):
         if dmeeting.status_code == 204:
             item1.delete()
             return redirect ('meetings')
-    
-    context ={'item':item1}
-    return render(request,'Meeting/delete.html',context)
 
 class DisplayMeetings(View):
     def get(self,request):
