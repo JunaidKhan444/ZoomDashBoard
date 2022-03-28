@@ -11,15 +11,47 @@ import requests
 import json
 from .models import ZoomMeetings
 from .forms import EditForm
+from django.views.generic.edit import FormView, CreateView
 
-class addmeeting(View):
+class addmeeting(FormView):
+    form_class = EditForm
+    template_name = 'Meeting/edit.html'
+    success_url = '/zoom/meetings/'
+    def form_valid(self,form):
+        # This method is called when valid form data has been POSTed.
+        # It should return an HttpResponse.
+        topic = form.cleaned_data['Meeting_Topic']
+        date = form.cleaned_data['Meeting_Start_Date']
+        #print(type(date))
+        duration = form.cleaned_data['Duration']
+        password = form.cleaned_data['Password']
+        date = str(date.strftime("%Y-%m-%dT%H:%M:%SZ"))
+        #print(date)
+        #print(type(date))
+        """date = datetime.datetime(2022,3,22,13,30).strftime("%Y-%m-%dT%H:%M:%SZ")"""
+        obj = {'topic':topic,'start_time':date,'duration':duration, 'password':password}
+        time_now = datetime.datetime.now()
+        expiration_time = time_now+datetime.timedelta(seconds= 20)
+        headers = {
+            'alg':'HS256','type':'JWT'
+        }
+        payload ={"iss":"4FKmr8Q1Qg236ltRBrpQ5Q","exp": round(expiration_time.timestamp())
+        }
+        encoded_jwt = jwt.encode(payload, "LwDi44ZefFPEOrtXhiBvkvH0aE2wLZDTojZV", algorithm="HS256")
+        header = {'authorization':"Bearer {}".format(encoded_jwt)}
+        email='mrjunaid444@gmail.com'
+        url_Cmeetings = 'https://api.zoom.us/v2/users/{}/meetings'.format(email)
+        create_meeting = requests.post(url_Cmeetings,json=obj,headers=header)
+        
+        return super().form_valid(form)
 
-    def get(self,request):
+
+    """def get(self,request):
         form = EditForm()
         context ={'form':form}
-        return render(request,'Meeting/edit.html',context)
+        return render(request,'Meeting/edit.html',context)"""
 
-    def post(self,request):
+    """def post(self,request):
         form = EditForm(request.POST)
         if form.is_valid():
             topic = form.cleaned_data['Meeting_Topic']
@@ -30,7 +62,7 @@ class addmeeting(View):
             date = str(date.strftime("%Y-%m-%dT%H:%M:%SZ"))
             #print(date)
             #print(type(date))
-            """date = datetime.datetime(2022,3,22,13,30).strftime("%Y-%m-%dT%H:%M:%SZ")"""
+            #date = datetime.datetime(2022,3,22,13,30).strftime("%Y-%m-%dT%H:%M:%SZ")
             obj = {'topic':topic,'start_time':date,'duration':duration, 'password':password}
             time_now = datetime.datetime.now()
             expiration_time = time_now+datetime.timedelta(seconds= 20)
@@ -49,11 +81,27 @@ class addmeeting(View):
         else:
              print("Invalid Form")
              context ={'form':form}
-             return render(request,'Meeting/edit.html',context)
+             return render(request,'Meeting/edit.html',context)"""
             #print(create_meeting.status_code)
 
-class editmeeting(View):
-    def get(self,request,pk):
+class editmeeting(FormView):
+    form_class = EditForm
+    template_name = 'Meeting/edition.html'
+    success_url = '/zoom/meetings/'
+    pk = None
+    def dispatch(self, request, *args, **kwargs):
+        self.pk = kwargs['pk']
+        return super().dispatch(request, *args, **kwargs)
+
+    def get_initial(self):
+        initial = super(FormView, self).get_initial()
+        data1 = ZoomMeetings.objects.get(object_id=self.pk)
+        print(data1.meeting_duration)
+        details={'Meeting_Topic':data1.meeting_topic,'Meeting_Start_Date':data1.meeting_starttime,'Duration':data1.meeting_duration}
+        initial.update(details)
+        return initial
+
+    """def get(self,request,pk):
         data1 = ZoomMeetings.objects.get(object_id=pk)
         #form = EditForm(initial=model_to_dict(data1))
         #form.Meeting_Topic.data = data1.meeting_topic
@@ -62,9 +110,47 @@ class editmeeting(View):
         details={'Meeting_Topic':data1.meeting_topic,'Meeting_Start_Date':data1.meeting_starttime,'Duration':data1.meeting_duration}
         form = EditForm(details)
         context ={'form':form,'pk':pk}
-        return render (request,'Meeting/edition.html',context)
+        return render (request,'Meeting/edition.html',context)"""
 
-    def post(self,request,pk):
+    def form_valid(self,form):
+        topic = form.cleaned_data['Meeting_Topic']
+        date = form.cleaned_data['Meeting_Start_Date']
+        #print(type(date))
+        duration = form.cleaned_data['Duration']
+        password = form.cleaned_data['Password']
+        date = str(date.strftime("%Y-%m-%dT%H:%M:%SZ"))
+        #print(date)
+        #print(type(date))
+        """date = datetime.datetime(2022,3,22,13,30).strftime("%Y-%m-%dT%H:%M:%SZ")"""
+        obj = {'topic':topic,'start_time':date,'duration':duration, 'password':str(password)}
+        time_now = datetime.datetime.now()
+        expiration_time = time_now+datetime.timedelta(seconds= 20)
+        headers = {
+            'alg':'HS256','type':'JWT'
+        }
+        payload ={"iss":"4FKmr8Q1Qg236ltRBrpQ5Q","exp": round(expiration_time.timestamp())
+        }
+        encoded_jwt = jwt.encode(payload, "LwDi44ZefFPEOrtXhiBvkvH0aE2wLZDTojZV", algorithm="HS256")
+        header = {'authorization':"Bearer {}".format(encoded_jwt)}
+        email='mrjunaid444@gmail.com'
+        data1 = ZoomMeetings.objects.get(object_id=self.pk)
+        print(type(data1.object_id))
+
+        url_Emeetings = 'https://api.zoom.us/v2/meetings/{}'.format(data1.object_id)
+        print(url_Emeetings)
+        print(obj)
+        edit_meeting = requests.patch(url_Emeetings,json=obj,headers=header)
+        row = ZoomMeetings.objects.get(object_id=data1.object_id)
+        row.meeting_topic = topic
+        row.meeting_starttime = date
+        row.meeting_duration = duration
+        row.save()
+        
+        print(edit_meeting.status_code)
+
+        return super().form_valid(form)
+
+    """def post(self,request,pk):
         form = EditForm(request.POST)
         if form.is_valid():
             topic = form.cleaned_data['Meeting_Topic']
@@ -75,7 +161,7 @@ class editmeeting(View):
             date = str(date.strftime("%Y-%m-%dT%H:%M:%SZ"))
             #print(date)
             #print(type(date))
-            """date = datetime.datetime(2022,3,22,13,30).strftime("%Y-%m-%dT%H:%M:%SZ")"""
+            #date = datetime.datetime(2022,3,22,13,30).strftime("%Y-%m-%dT%H:%M:%SZ")
             obj = {'topic':topic,'start_time':date,'duration':duration, 'password':password}
             time_now = datetime.datetime.now()
             expiration_time = time_now+datetime.timedelta(seconds= 20)
@@ -102,9 +188,10 @@ class editmeeting(View):
         else:
              print("Invalid Form")
              context ={'form':form}
-             return render(request,'Meeting/edition.html',context)
+             return render(request,'Meeting/edition.html',context)"""
 
 class deletemeeting(View):
+    
     def get(self,request,pk):
         item1 = ZoomMeetings.objects.get(object_id=pk)
         context ={'item':item1}
