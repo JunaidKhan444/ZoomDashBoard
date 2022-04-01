@@ -77,7 +77,7 @@ WSGI_APPLICATION = 'DjangoProject.wsgi.application'
 DATABASES = {
     'default': {  
         'ENGINE': 'django.db.backends.mysql',  
-        'NAME': 'ig',  
+        'NAME': 'igdb',  
         'USER': 'aamir',  
         'PASSWORD': 'aaa',  
         'HOST': '127.0.0.1',  

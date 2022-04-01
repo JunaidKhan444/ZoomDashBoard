@@ -2,7 +2,7 @@ from email.utils import parsedate_to_datetime
 from http.client import HTTPResponse
 from django.utils.dateparse import parse_date
 from django.views import View
-from .models import FacebookPosts, IgData
+from .models import FacebookPosts, InstaData
 from django.shortcuts import render
 import requests
 import json
@@ -38,11 +38,11 @@ class DisplayPosts(View):
         
         return render(request,'Social/fb_table.html',{ 'event_list' : FacebookPosts.objects.all() })
 
-class InstaData(View):
+class IgData(View):
     def get(self, request):
         base_url = "https://graph.facebook.com/v13.0"
         user_id = "100572015934463"
-        accessToken = 'EAAEqyxbMPZBYBAClRTZBT7LSvDtx6ZBBH51S3W2QFqBZAIThm6W4Lq9NZAeuVeqNKUuBGhX8LeSQLMglWU7nEaL15A5FiMuMcWKPViFOz6fqmPNBABgAK4zls1viIl9dPxkt5AST4BRnnzizINwWfY0492kCM6geOWZALmrjy1ne82fZBwRCrZBYUR3X65CL3pLTe5Ca836MKQZB18HgBIgJ6qMqTGUTLeNcZD'
+        accessToken = 'EAAEqyxbMPZBYBAOgxOlCpT4WmdiXGIkvl5EIyB17Xj1rGuIifSfNeoLrEhcL4E0oJG2Rz3HDx9kKzQtnT7SGjqhRC77Ez3eyYhHvGmg1GP79K1KLuopcFt2MrKHZAEyZCqN0YPikj9gLHggRYzHAfdBUH4n7ZBR34uxXdBJ53ZCUTOA9q3YwR17mqoAlW7mUgrflZCRxn2qEWP0FCfmrilRZBSx2VTLqzcZD'
         account_url=base_url+'/'+user_id+'/accounts?access_token='+accessToken
 
         #Fetch account data and grab page id from the data 
@@ -104,7 +104,9 @@ class InstaData(View):
             like_count.append(media_details[i]['like_count'])
         for i in range(len(media_id)):
             for j in range(len(comments)):
-                obj1 = IgData()
+            
+                obj1 = InstaData()
+                
                 obj1.media_id = media_id[i]
                 obj1.media_type = media_type[i]
                 obj1.comments_count = comments_count[i]
@@ -117,5 +119,5 @@ class InstaData(View):
             for j in range(len(comments)):
                 obj2.comments = comments[i][j]"""
         #return HTTPResponse('Hello world')
-        return render(request,'Social/instaTable.html', { 'event_list' : IgData.objects.all() })
+        return render(request,'Social/instaTable.html', { 'event_list' : InstaData.objects.all() })
 #
