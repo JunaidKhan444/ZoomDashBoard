@@ -14,7 +14,7 @@ class InstaData(models.Model):
     like_count = models.IntegerField(null=True)
     comments = models.CharField(max_length=100)
     class Meta:
-        unique_together = [['media_id', 'comments']]
+        unique_together = ['media_id']
     
 
 """class InstaComments(models.Model):
