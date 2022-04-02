@@ -42,7 +42,7 @@ class IgData(View):
     def get(self, request):
         base_url = "https://graph.facebook.com/v13.0"
         user_id = "100572015934463"
-        accessToken = 'EAAEqyxbMPZBYBAOgxOlCpT4WmdiXGIkvl5EIyB17Xj1rGuIifSfNeoLrEhcL4E0oJG2Rz3HDx9kKzQtnT7SGjqhRC77Ez3eyYhHvGmg1GP79K1KLuopcFt2MrKHZAEyZCqN0YPikj9gLHggRYzHAfdBUH4n7ZBR34uxXdBJ53ZCUTOA9q3YwR17mqoAlW7mUgrflZCRxn2qEWP0FCfmrilRZBSx2VTLqzcZD'
+        accessToken = 'EAAEqyxbMPZBYBAH2ib8IZBhuJmrDeVpBcgJcVtiwbDZClwIop530Uhu9eOoladmnktJDoq3ZCQVdUAk5TRqltcdH0m9TTGgAzr16sxNARsEWkw3ZBztXuWUZBSyFbQ6SC1HAgpnceu8ansghWpjUth0s7fGgZB7PwC5CcSfn2SIubbd7O2bZAqzgokpZA2lWJYfGUb3dnCLiAdA8QwhF2OKZCt3js07HASkXwZD'
         account_url=base_url+'/'+user_id+'/accounts?access_token='+accessToken
 
         #Fetch account data and grab page id from the data 
@@ -104,15 +104,14 @@ class IgData(View):
             like_count.append(media_details[i]['like_count'])
         for i in range(len(media_id)):
             for j in range(len(comments)):
-            
-                obj1 = InstaData()
-                
-                obj1.media_id = media_id[i]
-                obj1.media_type = media_type[i]
-                obj1.comments_count = comments_count[i]
-                obj1.like_count= like_count[i]
-                obj1.comments = comments[i][j]
-                obj1.save()
+                obj1,created1 = InstaData.objects.get_or_create(media_id=media_id[i], comments=comments[i][j])
+                if created1 == True:
+                    obj1.media_id = media_id[i]
+                    obj1.media_type = media_type[i]
+                    obj1.comments_count = comments_count[i]
+                    obj1.like_count= like_count[i]
+                    obj1.comments = comments[i][j]
+                    obj1.save()
         """for i in range(len(media_id)):
             obj2 = InstaComments()
             obj2.media_id=media_id[i]

@@ -10,10 +10,11 @@ class FacebookPosts(models.Model):
 class InstaData(models.Model):
     media_id = models.BigIntegerField()
     media_type = models.CharField(max_length=50)
-    comments_count = models.IntegerField()
-    like_count = models.IntegerField()
+    comments_count = models.IntegerField(null=True)
+    like_count = models.IntegerField(null=True)
     comments = models.CharField(max_length=100)
-
+    class Meta:
+        unique_together = [['media_id', 'comments']]
     
 
 """class InstaComments(models.Model):
